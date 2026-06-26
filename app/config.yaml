@@ -1,0 +1,50 @@
+autorotate_faces: true
+blend_ratio: 0.8
+clear_output: true
+face_detection_mode: All faces
+face_mask_blend: 40
+force_cpu: false
+frontalization_threshold: 30
+keep_frames: false
+launch_browser: false
+mask_bottom: 0
+mask_clip_text: cup,hands,hair,banana
+mask_engine: DFL XSeg
+mask_left: 0
+mask_right: 0
+mask_top: 0
+max_face_distance: 0.8
+max_threads: 6
+memory_limit: 8
+mouth_bottom_scale: 1
+mouth_left_scale: 1
+mouth_mask_blend: 10
+mouth_right_scale: 1
+mouth_top_scale: 1
+no_face_action: Retry rotated
+num_swap_steps: 2
+output_image_format: png
+output_method: File
+output_show_video: false
+output_template: '{file}_{time}'
+output_video_codec: libx264
+output_video_format: mp4
+provider: cuda
+restore_original_mouth: false
+selected_enhancer: Codeformer
+selected_theme: Default
+server_name: ''
+server_port: 0
+server_share: false
+show_mask_offsets: false
+skip_audio: false
+subsample_upscale: 512px
+swap_model: inswapper
+use_3d_recon: true
+use_frontalization: false
+use_os_temp_folder: false
+use_source_bank: false
+video_quality: 14
+video_swapping_method: In-Memory processing
+vr_mode: false
+wait_after_extraction: false
