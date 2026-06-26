@@ -11,3 +11,5 @@ ftfy
 regex
 pyvirtualcam
 pydantic==2.10.6
+requests
+certifi

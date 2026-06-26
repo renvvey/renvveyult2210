@@ -14,6 +14,8 @@ import tempfile
 import cv2
 import zipfile
 import traceback
+import requests
+import certifi
 
 from pathlib import Path
 from typing import List, Any
@@ -414,16 +416,29 @@ def conditional_download(download_directory_path: str, urls: List[str]) -> None:
             download_directory_path, os.path.basename(url)
         )
         if not os.path.exists(download_file_path):
-            request = urllib.request.urlopen(url)  # type: ignore[attr-defined]
-            total = int(request.headers.get("Content-Length", 0))
-            with tqdm(
-                total=total,
-                desc=f"Downloading {url}",
-                unit="B",
-                unit_scale=True,
-                unit_divisor=1024,
-            ) as progress:
-                urllib.request.urlretrieve(url, download_file_path, reporthook=lambda count, block_size, total_size: progress.update(block_size))  # type: ignore[attr-defined]
+            print(f"Downloading {url} ...")
+            try:
+                # Use requests with certifi for better SSL handling (fixes many Windows SSL issues)
+                response = requests.get(url, stream=True, verify=certifi.where(), timeout=60)
+                response.raise_for_status()
+                total = int(response.headers.get('content-length', 0))
+                with open(download_file_path, 'wb') as f, tqdm(
+                    desc=os.path.basename(url),
+                    total=total,
+                    unit='B',
+                    unit_scale=True,
+                    unit_divisor=1024,
+                ) as progress:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+                            progress.update(len(chunk))
+                print(f"Downloaded: {download_file_path}")
+            except Exception as e:
+                print(f"Download failed for {url}: {e}")
+                if os.path.exists(download_file_path):
+                    os.remove(download_file_path)
+                raise
 
 
 def get_local_files_from_folder(folder: str) -> List[str]:

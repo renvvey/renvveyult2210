@@ -31,6 +31,16 @@ module.exports = {
           path: "app",
         }
       }
+    },
+    {
+      method: "shell.run",
+      params: {
+        venv: "env",
+        path: "app",
+        message: [
+          "python download_models.py"
+        ]
+      }
     }
   ]
 }

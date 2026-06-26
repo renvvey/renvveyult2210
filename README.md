@@ -12,6 +12,8 @@ This repository is set up for easy installation via [Pinokio](https://pinokio.co
 2. Add this repository: `https://github.com/renvvey/renvveyult`
 3. Click **Install**
 
+All required AI models will be downloaded automatically during the installation process.
+
 ## Features
 
 - Fast face swapping using InsightFace
