@@ -20,7 +20,7 @@ if _sys.platform == 'win32':
 from roop import core
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--execution-provider', default='cuda', help='Execution provider: cpu or cuda')
+parser.add_argument('--execution-provider', default='cpu', help='Execution provider: cpu or cuda (use cpu on Mac)')
 args = parser.parse_args()
 from roop import globals
 globals.execution_providers = [args.execution_provider + 'ExecutionProvider']

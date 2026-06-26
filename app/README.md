@@ -45,9 +45,22 @@ In the event of violation of the legal and ethical requirements of the user's co
 Please refer to the wiki or issues in the main repository for usage.
 
 #### macOS Installation
-Simply run the following command. It will check and install all dependencies if necessary.
 
-`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/PJF16/renvveyult/master/installer/macOSinstaller.sh)`
+1. Clone the repo and go into the app folder:
+   ```bash
+   git clone https://github.com/renvvey/renvveyult2210.git
+   cd renvveyult2210/app
+   ```
+
+2. Run the Mac helper script:
+   ```bash
+   chmod +x runMacOS.sh
+   ./runMacOS.sh
+   ```
+
+   It will create a virtual environment, install dependencies, download models and start the app.
+
+See the main README for more details and troubleshooting.
 
 
 

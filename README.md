@@ -4,15 +4,95 @@ AI Face Swapper — swap faces in photos and videos quickly, no training require
 
 Powered by InsightFace + ONNX, with a clean Gradio web interface.
 
-This repository is set up for easy installation via [Pinokio](https://pinokio.computer/).
+This project supports Windows, macOS and Linux.
 
-## Install (Recommended)
+## Recommended: Install via Pinokio (easiest cross-platform)
 
-1. Install [Pinokio](https://pinokio.computer/)
-2. Add this repository: `https://github.com/renvvey/renvveyult`
+1. Install [Pinokio](https://pinokio.computer/) (works on Mac and Windows)
+2. Add this repository: `https://github.com/renvvey/renvveyult2210`
 3. Click **Install**
 
-All required AI models will be downloaded automatically during the installation process.
+The correct torch and onnxruntime for your platform will be installed automatically, and models will be downloaded.
+
+## Manual Installation
+
+### macOS
+
+```bash
+git clone https://github.com/renvvey/renvveyult2210.git
+cd renvveyult2210
+
+# Go to the app directory
+cd app
+
+# Make the script executable
+chmod +x runMacOS.sh
+
+# Run it (it will use or help with Python 3.11 via Homebrew and create a venv)
+./runMacOS.sh
+```
+
+If it complains about Python 3.11, install it first:
+
+```bash
+brew install python@3.11
+```
+
+After first run, models will be downloaded automatically.
+
+To run again later:
+
+```bash
+cd app
+source .venv/bin/activate
+python run.py
+```
+
+**For better performance on Apple Silicon**, after activating venv you can try:
+
+```bash
+pip install onnxruntime-silicon
+```
+
+Then run with CPU provider:
+
+```bash
+python run.py --execution-provider cpu
+```
+
+### Windows (Manual)
+
+```powershell
+git clone https://github.com/renvvey/renvveyult2210.git
+cd renvveyult2210
+cd app
+
+python -m venv venv
+venv\Scripts\activate
+
+pip install -r requirements.txt
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# Models will be downloaded automatically on first run
+python run.py
+```
+
+If no NVIDIA GPU, use:
+
+```powershell
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+python run.py --execution-provider cpu
+```
+
+### Linux
+
+Similar to Windows, use python -m venv and install torch from official index (CPU or CUDA as needed).
+
+## Running the App
+
+The web interface opens in your browser (usually http://127.0.0.1:7860).
+
+You can pass `--execution-provider cpu` if you don't have a supported GPU.
 
 ## Features
 
@@ -25,25 +105,19 @@ All required AI models will be downloaded automatically during the installation 
 - Virtual camera output
 - Optional TensorRT acceleration (Windows + NVIDIA)
 
-## Run Manually (without Pinokio)
+## For Advanced Users (Manual / Update)
 
-```bash
+If you want to manage the environment yourself or update:
+
+```powershell
 git clone https://github.com/renvvey/renvveyult.git
 cd renvveyult
-
-# Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate
-
-# Install dependencies
-pip install -r app/requirements.txt
-
-# (Important) Install torch for your GPU, for example for NVIDIA CUDA 12.1:
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-
-cd app
-python run.py
 ```
+
+Then run `install.bat` again to reinstall or update.
+
+Models are stored in the `models` folder next to `app`. You can delete and re-download them by running the download script again if needed.
+
 
 Then open the URL shown in the terminal (usually http://127.0.0.1:7860).
 

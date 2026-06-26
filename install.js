@@ -8,7 +8,7 @@ module.exports = {
       method: "shell.run",
       params: {
         message: [
-          "git clone --filter=blob:none --sparse https://github.com/renvvey/renvveyult.git _app_tmp && git -C _app_tmp sparse-checkout set app && mv _app_tmp/app app && rm -rf _app_tmp"
+          "git clone --filter=blob:none --sparse https://github.com/renvvey/renvveyult2210.git _app_tmp && git -C _app_tmp sparse-checkout set app && mv _app_tmp/app app && rm -rf _app_tmp"
         ]
       }
     },
