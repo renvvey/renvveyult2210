@@ -12,6 +12,7 @@ from typing import List
 import platform
 import signal
 import torch
+from threading import Lock
 
 try:
     import tensorrt  # registers TensorRT DLL paths on Windows so onnxruntime can find them
@@ -46,6 +47,7 @@ call_display_ui = None
 
 process_mgr = None
 _preview_process_mgr = None   # dedicated instance for live_swap — never shared with batch
+_preview_process_lock = Lock()
 
 
 if 'ROCMExecutionProvider' in roop.globals.execution_providers:
@@ -122,7 +124,7 @@ def limit_resources() -> None:
     if roop.globals.max_memory:
         memory = roop.globals.max_memory * 1024 ** 3
         if platform.system().lower() == 'darwin':
-            memory = roop.globals.max_memory * 1024 ** 6
+            return
         if platform.system().lower() == 'windows':
             import ctypes
             kernel32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
@@ -138,13 +140,14 @@ def release_resources() -> None:
     from roop.face_util import release_face_analyser
     global process_mgr, _preview_process_mgr
 
-    release_face_analyser()
-    if process_mgr is not None:
-        process_mgr.release_resources()
-        process_mgr = None
-    if _preview_process_mgr is not None:
-        _preview_process_mgr.release_resources()
-        _preview_process_mgr = None
+    with _preview_process_lock:
+        release_face_analyser()
+        if process_mgr is not None:
+            process_mgr.release_resources()
+            process_mgr = None
+        if _preview_process_mgr is not None:
+            _preview_process_mgr.release_resources()
+            _preview_process_mgr = None
 
     gc.collect()
     if torch is not None:
@@ -305,11 +308,12 @@ def live_swap(frame, options):
     if frame is None:
         return frame
 
-    if _preview_process_mgr is None:
-        _preview_process_mgr = ProcessMgr(None)
+    with _preview_process_lock:
+        if _preview_process_mgr is None:
+            _preview_process_mgr = ProcessMgr(None)
 
-    _preview_process_mgr.initialize(roop.globals.INPUT_FACESETS, roop.globals.TARGET_FACES, options)
-    newframe = _preview_process_mgr.process_frame(frame)
+        _preview_process_mgr.initialize(roop.globals.INPUT_FACESETS, roop.globals.TARGET_FACES, options)
+        newframe = _preview_process_mgr.process_frame(frame)
     if newframe is None:
         return frame
     return newframe
