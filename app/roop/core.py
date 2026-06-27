@@ -235,6 +235,8 @@ def get_processing_plugins(masking_engine, swap_model='inswapper'):
         processors.update({"gpen": {}})
     elif roop.globals.selected_enhancer == 'Restoreformer++':
         processors.update({"restoreformer++": {}})
+    elif roop.globals.selected_enhancer == 'Tattoo Remover':
+        processors.update({"tattoo_remover": {}})
     return processors
 
 

@@ -70,7 +70,8 @@ class ProcessMgr():
         'colorizer'         : 'Frame_Colorizer',
         'filter_generic'    : 'Frame_Filter',
         'removebg'          : 'Frame_Masking',
-        'upscale'           : 'Frame_Upscale'
+        'upscale'           : 'Frame_Upscale',
+        'tattoo_remover'    : 'Frame_TattooRemover'
     }
 
     def __init__(self, progress):
